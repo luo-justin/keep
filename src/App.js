@@ -12,8 +12,12 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 class App extends Component {
   constructor(props){
     super(props);
-    this.ref = firebase.firestore().collection('boards');
+    this.ref = firebase.firestore().collection('cards');
     this.initModal();
+
+    this.state = {
+      cards: []
+    }
   }
 
   initModal() {
@@ -23,6 +27,23 @@ class App extends Component {
     });
   }
 
+  onCollectionUpdate = (querySnapShot) =>{
+    const cards = []
+    querySnapShot.forEach(function(doc){
+      const {title, description, timestamp} = doc.data();
+      cards.push({
+        title: title,
+        description: description,
+        timestamp: timestamp, 
+      });
+    });
+    this.setState({cards: cards});
+  }
+
+  componentDidMount(){
+    this.ref.onSnapshot(this.onCollectionUpdate);
+  }
+
   render() {
     return (
       <div class="">
@@ -30,9 +51,7 @@ class App extends Component {
         <Create/>
         <div class="container">
           <div class="row">
-            <Card/>
-            <Card/>
-            <Card/>
+            {this.state.cards.map(card =>  <Card data={card} />)}
           </div>
 
         </div>
