@@ -58,11 +58,11 @@ class Create extends Component{
 			      <h4 style={{paddingBottom: "24px"}}>Create a Task</h4>
 			      <div class="row">
 				      <div class="input-field col s6">
-			          <input placeholder="Grocery shopping" id="title" value={title} onChange={this.onChange} type="text" />
+			          <input required placeholder="Grocery shopping" id="title" value={title} onChange={this.onChange} type="text" />
 			          <label for="title">Title</label>
 		        	</div>
 		        	<div class="input-field col s6">
-			          <input placeholder="Buy two eggs" id="description" value={description} onChange={this.onChange} type="text" />
+			          <input required placeholder="Buy two eggs" id="description" value={description} onChange={this.onChange} type="text" />
 			          <label for="description">Description</label>
 		        	</div>
 	        	</div>

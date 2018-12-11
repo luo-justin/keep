@@ -3,7 +3,7 @@ import Nav from './components/Nav';
 import Card from './components/Card';
 import Create from './components/Create';
 import Edit from './components/Edit';
-
+import Delete from './components/Delete';
 import firebase from './Firebase';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -20,7 +20,7 @@ class App extends Component {
     }
 
   }
-
+  
   initModal() {
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');
@@ -52,10 +52,12 @@ class App extends Component {
   render() {
     return (
       <div class="">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <Nav/>
         <Create/>
         {this.state.cards.map(card =>  <Edit key={card.cid} cid={card.cid} /> )}
-        <div class="container">
+        {this.state.cards.map(card =>  <Delete key={card.cid} cid={card.cid} /> )}
+        <div class="container" style={{marginTop: "24px"}}>
           <div class="row">
             {this.state.cards.map(card =>  <Card key={card.cid} data={card} /> )}
           </div>

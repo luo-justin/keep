@@ -19,14 +19,14 @@ class Card extends Component{
 		return(  
 			<div>
 			    <div class="col s12 m6 l4">
-			      <div class="card blue-grey darken-1">
-			        <div class="card-content white-text">
+			      <div class="card grey lighten-5 hoverable">
+			        <div class="card-content black-text">
 			          <span class="card-title">{title}</span>
-			          <p>{description}</p>
+			          <p style={{whiteSpace: "pre-wrap"}}>{description}</p>
 			        </div>
 			        <div class="card-action">
-			          <a href="#">Delete</a>
-  					  <a class="modal-trigger" href={"#editModal" + cid}>Modal</a>
+			          <a class="modal-trigger" href={"#deleteModal" + cid}><i class="material-icons left">delete</i></a>
+  					  <a class="modal-trigger" href={"#editModal" + cid}><i class="material-icons right">edit</i></a>
 			        </div>
 			      </div>
 			    </div>
