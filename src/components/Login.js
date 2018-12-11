@@ -3,7 +3,7 @@ import firebase from '../Firebase';
 import M from 'materialize-css/dist/js/materialize.min.js';
 
 
-class Create extends Component{
+class Login extends Component{
 	constructor(props){
 		super(props)
 		this.ref = firebase.firestore().collection('cards');
@@ -12,6 +12,8 @@ class Create extends Component{
 			title: '',
 			description: '',
 			timestamp: '',
+			cid: '',
+
 		};
 	}
 
@@ -30,17 +32,13 @@ class Create extends Component{
 			title: title,
 			description: description,
 			timestamp: timeStamp,
-			cid: '',
 		}).then((docRef) => {
 			this.setState({
-				title: '',
-		        description: '',
-		        author: '',
-		        cid: '',
+				
 			});
 
 			//close the modal
-			var instance = M.Modal.getInstance(document.getElementById("createModal"));
+			var instance = M.Modal.getInstance(document.getElementById("modal1"));
 			instance.close();
 		})
 		.catch((error) => {
@@ -50,9 +48,9 @@ class Create extends Component{
 	}
 
 	render(){
-		const { title, description, timestamp, cid} = this.state;
+		const { title, description, timestamp} = this.state;
 		return (
-			<div id="createModal" class="modal">
+			<div id="loginModal" class="modal">
 				<form onSubmit={this.onSubmit}>
 			    <div class="modal-content">
 			      <h4 style={{paddingBottom: "24px"}}>Create a Task</h4>
@@ -77,4 +75,4 @@ class Create extends Component{
 }
 
 
-export default Create;
+export default Login;	
