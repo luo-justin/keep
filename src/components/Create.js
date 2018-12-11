@@ -6,20 +6,47 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 class Create extends Component{
 	constructor(props){
 		super(props)
-		this.ref = firebase.firestore().collection('cards');
 
 		this.state = {
 			title: '',
 			description: '',
 			timestamp: '',
+			userId: this.props.userId,
 		};
+		this.ref = firebase.firestore().collection('user').doc(this.state.userId).collection("cards");
+
 	}
+
+
+	addUserListener(){
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log("change detected:");
+        console.log(user);
+        user.providerData.forEach((profile) => {
+					this.ref = firebase.firestore().collection('user').doc(profile.email).collection("cards");
+          this.setState({userId: profile.email});
+        });
+        
+      } else {
+        // No user is signed in.
+        console.log("no one loggeedin")
+      }
+    });
+  }
+
 
 	onChange = (e) =>{
 		const state = this.state;
 		state[e.target.id] = e.target.value;
 		this.setState(state);
 
+	}
+
+
+	componentDidMount(){
+		this.addUserListener();
 	}
 
 	onSubmit = (e) =>{

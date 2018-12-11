@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import firebase from '../Firebase';
-import Nav from '../components/Nav'
+import Nav from '../components/Nav';
+import Create from '../components/Create';
+
 import M from 'materialize-css/dist/js/materialize.min.js';
 
 
@@ -23,10 +25,17 @@ class Login extends Component{
 	  } else {
 	    // No user is signed in.
 	   	console.log("no one is logged in")
-
 	  }
 	});
 	}
+
+	initModal() {
+    document.addEventListener('DOMContentLoaded', function() {
+    console.log("Wtf212");
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, []);
+    });
+  }
 
 	onChange = (e) =>{
 		const state = this.state;
@@ -42,14 +51,25 @@ class Login extends Component{
 		const auth = firebase.auth(); 
 		//Sign in
 		const promise = auth.signInWithEmailAndPassword(email, pass);
-		promise.catch(e => console.log(e.message));
+		promise
+		.then((res)=>{
+			console.log("hello:")
+			console.log(this.state);
+			this.props.history.push('/');
 
+		})
+		.catch(e => console.log(e.message));
+	}
+
+	componentDidMount(){
+		this.initModal();
 	}
 
 	render(){
 		return (
 			<div>
 				<Nav/>
+				<Create userId="none"/>
 				<div class="container">
 					<div style={{"height": "24px"}}></div>
 					<div class="row" >
