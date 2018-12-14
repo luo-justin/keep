@@ -55,6 +55,7 @@ class App extends Component {
   initModal() {
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');
+    console.log("load em up");
     var instances = M.Modal.init(elems, []);
     });
   }
@@ -84,9 +85,11 @@ class App extends Component {
   }
 
   componentDidMount(){
-    console.log("component mounted");
     this.addUserListener();
     this.initModal();
+    var elems = document.querySelectorAll('.modal');
+    M.Modal.init(elems, []);
+
   }
 
   render() {
@@ -95,8 +98,8 @@ class App extends Component {
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <Nav/>
         <Create userId={this.state.userId}/>
-        {this.state.cards.map(card =>  <Edit key={card.cid} cid={card.cid} /> )}
-        {this.state.cards.map(card =>  <Delete key={card.cid} cid={card.cid} /> )}
+        {this.state.cards.map(card =>  <Edit key={card.cid} cid={card.cid} userId={this.state.userId}/> )}
+        {this.state.cards.map(card =>  <Delete key={card.cid} cid={card.cid} userId={this.state.userId} /> )}
         <div class="container" style={{marginTop: "24px"}}>
           <div class="row">
             {this.state.cards.map(card =>  <Card key={card.cid} data={card} /> )}

@@ -11,6 +11,7 @@ class Delete extends Component{
 			timestamp: '',
 			cid: '',
 		}
+		this.ref = firebase.firestore().collection('user').doc(this.props.userId).collection("cards").doc(this.props.cid);
 
 	}
 
@@ -24,7 +25,7 @@ componentDidMount(){
 onSubmit = (e) =>{
 	e.preventDefault();
 	const { title, description, timestamp} = this.state;
-	const deleteRef = firebase.firestore().collection("cards").doc(this.props.cid);
+	const deleteRef = this.ref;
 	deleteRef.delete().then(function() {
     	console.log("Document successfully deleted!");
 	})

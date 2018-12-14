@@ -11,14 +11,31 @@ class Edit extends Component{
 			timestamp: '',
 			cid: '',
 		}
+		this.ref = firebase.firestore().collection('user').doc(this.props.userId).collection("cards").doc(this.props.cid);
 
 	}
 
-   
+	addUserListener(){
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log("change detected:");
+        console.log(user);
+        user.providerData.forEach((profile) => {
+					this.ref = firebase.firestore().collection('user').doc(profile.email).collection("cards").doc(this.props.cid);
+        });
+      } else {
+        // No user is signed in.
+        this.ref();
+      }
+    });
+  }
+
+
 
 	componentDidMount(){
-		var docRef = firebase.firestore().collection("cards").doc(this.props.cid);
-		docRef.get().then((doc) => {
+		this.addUserListener();
+		this.ref.get().then((doc) => {
 		    if (doc.exists) {
 		        const data = doc.data();
 		        console.log(this);
@@ -32,9 +49,6 @@ class Edit extends Component{
 		        // doc.data() will be undefined in this case
 		        console.log("No such document!");
 		    }
-
-
-
 		}).catch(function(error) {
 		    console.log("Error getting document:", error);
 		});
@@ -53,7 +67,7 @@ onChange = (e) => {
 onSubmit = (e) =>{
 	e.preventDefault();
 	const { title, description, timestamp} = this.state;
-	const updateRef = firebase.firestore().collection("cards").doc(this.props.cid);
+	const updateRef = this.ref;
 	updateRef.set({
 		title,
 		description,
@@ -77,7 +91,6 @@ onSubmit = (e) =>{
 
 render(){
 	const { title, description, timestamp, cid} = this.state;
-
 	return(
 		<div>
 			<div id={"editModal" + this.props.cid} class="modal">

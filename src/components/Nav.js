@@ -42,7 +42,7 @@ class Nav extends Component{
 
 
 
- ;
+ 
 	
 
 	render(){
