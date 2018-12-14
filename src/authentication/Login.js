@@ -16,6 +16,9 @@ class Login extends Component{
 			email: '',
 			password: '',
 			isLoggedIn: '',
+			validState: '',
+			validMsg:  '',
+
 		};
 
 		firebase.auth().onAuthStateChanged(function(user) {
@@ -41,6 +44,12 @@ class Login extends Component{
 		const state = this.state;
 		state[e.target.id] = e.target.value;
 		this.setState(state);
+		this.setState({
+					validMsg: "",
+					validState: ""
+			});	
+
+		
 
 	}
 
@@ -58,7 +67,15 @@ class Login extends Component{
 			this.props.history.push('/');
 
 		})
-		.catch(e => console.log(e.message));
+		.catch((e) => {
+					this.setState({
+					validMsg: e.message,
+					validState: "invalid"
+			});	
+
+			console.log(e.message);
+
+	});
 	}
 
 	componentDidMount(){
@@ -66,6 +83,10 @@ class Login extends Component{
 	}
 
 	render(){
+
+		const validState = this.state.validState;
+		const validMsg = this.state.validMsg;
+
 		return (
 			<div>
 				<Nav/>
@@ -80,12 +101,15 @@ class Login extends Component{
 								   <form class="col s12" onSubmit={this.onSubmit}>
 								      <div class="row">
 								        <div class="input-field col s12">
-								          <input id="email" type="text" class="validate" onChange={this.onChange}/>
+								          <input id="email" type="text" class={validState} onChange={this.onChange}/>
 								          <label for="email">Email</label>
+								          <span class="helper-text" data-error={validMsg}></span>
+
 								        </div>
 								        <div class="input-field col s12">
-								          <input id="password" type="text" class="validate" onChange={this.onChange}/>
+								          <input id="password" type="text" class={validState} onChange={this.onChange}/>
 								          <label for="password">Password</label>
+								          <span class="helper-text" data-error={validMsg}></span>
 								        </div>
 								      </div>
 								      <button class="btn-large waves-effect waves-light" type="submit" name="action">Login
