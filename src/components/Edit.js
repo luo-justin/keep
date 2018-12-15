@@ -31,6 +31,8 @@ class Edit extends Component{
     });
   }
 
+
+
 	componentDidMount(){
 		this.addUserListener();
 		this.ref.get().then((doc) => {

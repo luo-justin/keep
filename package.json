@@ -5,8 +5,10 @@
   "dependencies": {
     "firebase": "^5.7.0",
     "materialize-css": "^1.0.0-rc.2",
+    "moment": "^2.23.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-moment": "^0.8.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "redux": "^4.0.1"
