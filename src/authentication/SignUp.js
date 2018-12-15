@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link} from 'react-router-dom';
 import firebase from '../Firebase';
 import Nav from '../components/Nav'
 import M from 'materialize-css/dist/js/materialize.min.js';
@@ -13,6 +14,8 @@ class SignUp extends Component{
 			email: '',
 			password: '',
 			isLoggedIn: '',
+			validState: '',
+			validMsg: '',
 		};
 
 		this.addListener();
@@ -24,6 +27,10 @@ class SignUp extends Component{
 		const state = this.state;
 		state[e.target.id] = e.target.value;
 		this.setState(state);
+		this.setState({
+					validMsg: "",
+					validState: ""
+			});	
 
 	}
 
@@ -63,13 +70,17 @@ class SignUp extends Component{
 		const auth = firebase.auth(); 
 		//Sign in
 		const promise = auth.createUserWithEmailAndPassword(email, pass);
-		promise.catch(e => console.log(e.message));
+		promise.catch((e) =>{
+			this.setState({
+					validMsg: e.message,
+					validState: "invalid"
+		});	
+		});
 
 	}
 
 	render(){
-		const {name, email, password, isLoggedIn} = this.state; 
-
+		const {name, email, password, isLoggedIn, validState, validMsg} = this.state; 
 		return (
 			<div>
 				<Nav/>
@@ -83,20 +94,26 @@ class SignUp extends Component{
 								   <form class="col s12" onSubmit={this.onSubmit}>
 								      <div class="row">
 									      <div class="input-field col s12">
-								          <input id="name" type="text" class="validate" value={name} onChange={this.onChange}/>
+								          <input id="name" type="text" class="" value={name} onChange={this.onChange} required/>
 								          <label for="name">Name</label>
 									       </div>
 								        <div class="input-field col s12">
-								          <input id="email" type="text" class="validate" value={email} onChange={this.onChange}/>
+								          <input id="email" type="text" class={validState} value={email} onChange={this.onChange} required/>
 								          <label for="email">Email</label>
+								          <span class="helper-text" data-error={validMsg}></span>
 								        </div>
 								        <div class="input-field col s12">
-								          <input id="password" type="text" class="validate" value={password} onChange={this.onChange}/>
+								          <input id="password" type="password" class={validState} value={password} onChange={this.onChange} required/>
 								          <label for="password">Password</label>
+								          <span class="helper-text" data-error={validMsg}></span>
 								        </div>
 								      </div>
 								      <button class="btn-large waves-effect waves-light" type="submit" name="action">Register
 										  </button>
+										  <div class="center">
+										  	<p>Already have an account?</p>
+										  	<Link class="waves-effect waves-light btn" to="/login">Login</Link>
+										  </div>
 								   </form>
 									</div>
 								</div>
