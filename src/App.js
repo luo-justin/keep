@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Nav from './components/Nav';
+import Empty from './components/Empty';
 import Card from './components/Card';
 import Create from './components/Create';
 import Edit from './components/Edit';
@@ -15,7 +16,8 @@ class App extends Component {
     super(props);
     this.state = {
       userId: 'none',
-      cards: []
+      cards: [],
+      isLoading: true,
     }
     this.ref = null;
     this.unsubscribe = null;
@@ -32,14 +34,13 @@ class App extends Component {
         user.providerData.forEach((profile) => {
           this.ref = firebase.firestore().collection('user').doc(profile.email).collection("cards");
           this.setState({userId: profile.email});
-          console.log("Called pls")
           this.ref.onSnapshot(this.onCollectionUpdate);
         });
         
       } else {
         // No user is signed in.
         console.log("no one loggedin");
-        this.setState({userId: 'none', cards: []});
+        this.setState({userId: 'none', cards: [], isLoading: false});
         //unsubscribe
         if(this.ref){
           this.ref();
@@ -61,6 +62,7 @@ class App extends Component {
   }
 
   onCollectionUpdate = (querySnapShot) =>{
+    this.setState({isLoading: true});
     const cards = [];
     console.log("collection updated");
     console.log(querySnapShot);
@@ -80,7 +82,8 @@ class App extends Component {
     });
     
     this.setState({cards: cards});
-    console.log(cards);
+    this.setState({isLoading: false});
+
 
   }
 
@@ -88,19 +91,38 @@ class App extends Component {
     this.addUserListener();
     this.initModal();
     var elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems, []);
+    M.Modal.init(elems, [])
+  }
 
+  isEmpty(){
+    //TODO: check user loggin state as well
+    const userId = this.state.userId;
+    const cards = this.state.cards;
+    const isLoading = this.state.isLoading;
+    if(userId != "none"){
+      if(cards.length == 0 && !isLoading){
+        return <Empty isLoggedIn={true}/>;
+        }
+      return <div></div>;
+    }
+    else{
+      if(!isLoading){
+        return <Empty isLoggedIn={false}/>
+      }
+    }
   }
 
   render() {
+
     return (
       <div class="">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <Nav/>
+        <Nav userId={this.state.userId}/>
         <Create userId={this.state.userId}/>
         {this.state.cards.map(card =>  <Edit key={card.cid} cid={card.cid} userId={this.state.userId}/> )}
         {this.state.cards.map(card =>  <Delete key={card.cid} cid={card.cid} userId={this.state.userId} /> )}
         <div class="container" style={{marginTop: "24px"}}>
+          {this.isEmpty()}
           <div class="row">
             {this.state.cards.map(card =>  <Card key={card.cid} data={card} /> )}
           </div>

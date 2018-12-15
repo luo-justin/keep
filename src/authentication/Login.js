@@ -49,7 +49,7 @@ class Login extends Component{
 					validState: ""
 			});	
 
-		
+
 
 	}
 
@@ -107,7 +107,7 @@ class Login extends Component{
 
 								        </div>
 								        <div class="input-field col s12">
-								          <input id="password" type="text" class={validState} onChange={this.onChange}/>
+								          <input id="password" type="password" class={validState} onChange={this.onChange}/>
 								          <label for="password">Password</label>
 								          <span class="helper-text" data-error={validMsg}></span>
 								        </div>

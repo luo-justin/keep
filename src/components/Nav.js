@@ -40,6 +40,14 @@ class Nav extends Component{
   	this.addUserListener();
   }
 
+  loadUserName(){
+  	if(this.props.userId == "none"){
+  		return "";
+  	}
+  	return this.props.userId;
+
+  }
+
 
 
  
@@ -62,6 +70,7 @@ class Nav extends Component{
 		      <ul id="nav-mobile" class="right hide-on-med-and-down">
 		        <li><a class="waves-effect waves-light modal-trigger" href="#createModal">Create</a></li>
 		        <li>{button}</li>
+		        <li style={{"fontSize": "12px"}}>{this.loadUserName()}</li>
 
 		      </ul>
 		    </div>
