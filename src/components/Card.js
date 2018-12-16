@@ -13,6 +13,7 @@ class Card extends Component{
 			
 		};
 		Moment.globalFormat = 'MMM D YYYY , HH:mm';
+    M.textareaAutoResize(document.getElementById("description"));
 
 	 }
 

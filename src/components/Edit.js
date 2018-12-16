@@ -55,7 +55,8 @@ class Edit extends Component{
 
 		var elem = document.getElementById("editModal" + this.props.cid);
     var instances = M.Modal.init(elem, []);
-    M.updateTextFields()
+    M.updateTextFields();
+    M.textareaAutoResize(document.getElementById("description"));
 }
 
 onChange = (e) => {
@@ -103,8 +104,8 @@ render(){
 				          <label for="title">Title</label>
 			        	</div>
 			        	<div class="input-field col s6">
-				          <input placeholder="Buy two eggs" id="description" value={description} onChange={this.onChange} type="text" />
-				          <label for="description">Description</label>
+				          <textarea id="description" class="materialize-textarea" value={description} onChange={this.onChange}></textarea>
+          				<label for="description">Textarea</label>
 			        	</div>
 		        	</div>
 				  	</div>

@@ -34,7 +34,7 @@ class App extends Component {
         user.providerData.forEach((profile) => {
           this.ref = firebase.firestore().collection('user').doc(profile.email).collection("cards");
           this.setState({userId: profile.email});
-          this.ref.onSnapshot(this.onCollectionUpdate);
+          this.ref.orderBy("timestamp", "desc").onSnapshot(this.onCollectionUpdate);
         });
         
       } else {
